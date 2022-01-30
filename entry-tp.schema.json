@@ -31,13 +31,11 @@
             "properties": {
                 "colorDark": {
                     "type": "string",
-                    "format": "hex color",
                     "pattern": "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
                     "examples": ["#FF0000"]
                 },
                 "colorLight": {
                     "type": "string",
-                    "format": "hex color",
                     "pattern": "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
                     "examples": ["#00FF00"]
                 }
@@ -45,34 +43,30 @@
         },
         "plugin_start_cmd": {
             "description": "Specify the path of execution here. You should be aware that it will be passed to the OS process exection service. This means you need to be aware of spaces and use absolute paths to your executable.\n\nIf you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugins folder. So append your plugins folder name to it as well to access your plugin base folder.\n\nThis execution will be done when the plugin is loaded in the system and only if it is a valid plugin. Use this to start your own service that communicates with the Touch Portal plugin system.",
-            "type": "string",
-            "format": "execution command"
+            "type": "string"
         },
         "plugin_start_cmd_windows": {
             "description": "This is the same plugin_start_cmd but will only run on a Windows desktop. If this is specified Touch Portal will not run the default plugin_start_cmd when this plug-in is used on Windows but only this entry.",
-            "type": "string",
-            "format": "execution command"
+            "type": "string"
         },
         "plugin_start_cmd_mac": {
             "description": "This is the same plugin_start_cmd but will only run on a Windows desktop. If this is specified Touch Portal will not run the default plugin_start_cmd when this plug-in is used on Windows but only this entry.",
-            "type": "string",
-            "format": "execution command"
+            "type": "string"
         },
         "plugin_start_cmd_linux": {
             "description": "This is the same plugin_start_cmd but will only run on a Windows desktop. If this is specified Touch Portal will not run the default plugin_start_cmd when this plug-in is used on Windows but only this entry.",
-            "type": "string",
-            "format": "execution command"
+            "type": "string"
         },
         "settings": {
             "description": "This is the collection that holds all the settings for this plug-in",
             "type": "array",
-            "items": {"$ref": "#/$defs/setting"},
+            "items": { "$ref": "#/$defs/setting" },
             "uniqueItems": true
         },
         "categories": {
             "description": "This is the collection that holds all the action categories. Categories are used in the action list in Touch Portal. Each Category must contain at least an item such as an action, an event or an connector.",
             "type": "array",
-            "items": {"$ref": "#/$defs/category"},
+            "items": { "$ref": "#/$defs/category" },
             "minItems": 1,
             "uniqueItems": true
         }
@@ -111,7 +105,7 @@
             },
             "required": ["name", "type"],
             "if": {
-                "properties": {"type": {"const": "number"}}
+                "properties": { "type": { "const": "number" } }
             },
             "then": {
                 "properties": {
@@ -141,31 +135,30 @@
                 },
                 "imagepath": {
                     "description": "This is the absolute path to an icon for the category. You should place this in your plugin folder and reference it. If you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugin folder.",
-                    "type": "string",
-                    "format": "file path"
+                    "type": "string"
                 },
                 "actions": {
                     "description": "This is the collection that holds all the actions.",
                     "type": "array",
-                    "items": {"$ref": "#/$defs/action"},
+                    "items": { "$ref": "#/$defs/action" },
                     "uniqueItems": true
                 },
                 "events": {
                     "description": "This is the collection that holds all the events. ",
                     "type": "array",
-                    "items": {"$ref": "#/$defs/event"},
+                    "items": { "$ref": "#/$defs/event" },
                     "uniqueItems": true
                 },
                 "connectors": {
                     "description": "This is the collection that holds all the connectors.",
                     "type": "array",
-                    "items": {"$ref": "#/$defs/connector"},
+                    "items": { "$ref": "#/$defs/connector" },
                     "uniqueItems": true
                 },
                 "states": {
                     "description": "This is the collection that holds all the states.",
                     "type": "array",
-                    "items": {"$ref": "#/$defs/state"},
+                    "items": { "$ref": "#/$defs/state" },
                     "uniqueItems": true
                 }
             },
@@ -199,7 +192,7 @@
                 "data": {
                     "description": "This is a collection of data which can be specified by the user. These data id's can be used to fill up the execution_cmd text.",
                     "type": "array",
-                    "items": {"$ref": "#/$defs/actionData"}
+                    "items": { "$ref": "#/$defs/actionData" }
                 },
                 "tryInline": {
                     "description": "Adding this attribute to the action will make this an inline action. User can edit data from the action list instead of a popup. Options are \"true\" or \"false\". Default is false",
@@ -213,7 +206,7 @@
             },
             "required": ["id", "name", "prefix", "type"],
             "if": {
-                "properties": {"type": {"const": "execute"}}
+                "properties": { "type": { "const": "execute" } }
             },
             "then": {
                 "properties": {
@@ -256,12 +249,12 @@
             "allOf": [
                 {
                     "if": {
-                        "properties": {"type": {"const": "number"}}
+                        "properties": { "type": { "const": "number" } }
                     },
                     "then": {
                         "properties": {
                             "type": {
-                                "default": {"type": "number"}
+                                "default": { "type": "number" }
                             },
                             "allowDecimals": {
                                 "description": "This field can only be used with the \"number\" type and tells the system whether this data field should allow decimals in the number. The default is \"true\".",
@@ -281,23 +274,23 @@
                 },
                 {
                     "if": {
-                        "properties": {"type": {"const": "switch"}}
+                        "properties": { "type": { "const": "switch" } }
                     },
                     "then": {
-                        "properties": {"default": {"type": "boolean"}}
+                        "properties": { "default": { "type": "boolean" } }
                     }
                 },
                 {
                     "if": {
-                        "properties": {"type": {"const": "color"}}
+                        "properties": { "type": { "const": "color" } }
                     },
                     "then": {
-                        "properties": {"default": {"format": "hex color #RRGGBBAA", "pattern": "^#([a-fA-F0-9]{8}|[a-fA-F0-9]{4})$"}}
+                        "properties": { "default": { "format": "hex color #RRGGBBAA", "pattern": "^#([a-fA-F0-9]{8}|[a-fA-F0-9]{4})$" } }
                     }
                 },
                 {
                     "if": {
-                        "properties": {"type": {"const": "file"}}
+                        "properties": { "type": { "const": "file" } }
                     },
                     "then": {
                         "properties": {
@@ -313,7 +306,7 @@
                 },
                 {
                     "if": {
-                        "properties": {"type": {"const": "choice"}}
+                        "properties": { "type": { "const": "choice" } }
                     },
                     "then": {
                         "properties": {
@@ -389,7 +382,7 @@
                 "data": {
                     "description": "This is a collection of data which can be specified by the user. These data id's can be used to fill up the format attribute.",
                     "type": "array",
-                    "items": {"$ref": "#/$defs/actionData"}
+                    "items": { "$ref": "#/$defs/actionData" }
                 }
             },
             "required": ["id", "name", "format"]
