@@ -1,0 +1,430 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "https://pjiesco.com/touch-portal/entry-tp.schema.json",
+    "title": "Touch Portal entry.tp Validation Schema",
+    "description": "A validation schema for the Touch Portal plugin entry.tp",
+    "type": "object",
+    "properties": {
+        "$schema": {},
+        "sdk": {
+            "description": "This should represent the SDK version of Touch Portal this plugin is build for. Versioning data:\n\nTouch Portal v2.1 introduced Api 1\nTouch Portal v2.2 introduced Api 2\nTouch Portal v2.3 introduced Api 3\nTouch Portal v3.0 introduced Api 4\nTouch Portal v3.0.6 introduced Api 5",
+            "type": "number",
+            "enum": [1, 2, 3, 4, 5]
+        },
+        "version": {
+            "description": "A number representing your own versioning. Currently this variable is not used by Touch Portal but may be used in the future. This should be an integer value. So only whole numbers, no decimals. This version value will be send back after the pairing has been done.",
+            "type": "number"
+        },
+        "name": {
+            "description": "This is the name of the Plugin. This will show in Touch Portal in the settings section \"Plug-ins\". (From Touch Portal version 2.2)",
+            "type": "string",
+            "examples": ["My Touch Portal Plugin"]
+        },
+        "id": {
+            "description": "This is the unique ID of the Plugin. Use an id that will only be used by you. So use a prefix for example.",
+            "type": "string",
+            "examples": ["some.super.unique.plugin.id"]
+        },
+        "configuration": {
+            "description": "This object can be used for coloring the actions and events for the plugin. These colors will be used in the colored theme. In the blue and grey theme this will be ignored. The attributes colorDark and colorLight should be there when you want to specify the colors. The color value is a string hex value, like #FF0000 for red or #00FF00 for green.",
+            "type": "object",
+            "properties": {
+                "colorDark": {
+                    "type": "string",
+                    "format": "hex color",
+                    "pattern": "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
+                    "examples": ["#FF0000"]
+                },
+                "colorLight": {
+                    "type": "string",
+                    "format": "hex color",
+                    "pattern": "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$",
+                    "examples": ["#00FF00"]
+                }
+            }
+        },
+        "plugin_start_cmd": {
+            "description": "Specify the path of execution here. You should be aware that it will be passed to the OS process exection service. This means you need to be aware of spaces and use absolute paths to your executable.\n\nIf you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugins folder. So append your plugins folder name to it as well to access your plugin base folder.\n\nThis execution will be done when the plugin is loaded in the system and only if it is a valid plugin. Use this to start your own service that communicates with the Touch Portal plugin system.",
+            "type": "string",
+            "format": "execution command"
+        },
+        "plugin_start_cmd_windows": {
+            "description": "This is the same plugin_start_cmd but will only run on a Windows desktop. If this is specified Touch Portal will not run the default plugin_start_cmd when this plug-in is used on Windows but only this entry.",
+            "type": "string",
+            "format": "execution command"
+        },
+        "plugin_start_cmd_mac": {
+            "description": "This is the same plugin_start_cmd but will only run on a Windows desktop. If this is specified Touch Portal will not run the default plugin_start_cmd when this plug-in is used on Windows but only this entry.",
+            "type": "string",
+            "format": "execution command"
+        },
+        "plugin_start_cmd_linux": {
+            "description": "This is the same plugin_start_cmd but will only run on a Windows desktop. If this is specified Touch Portal will not run the default plugin_start_cmd when this plug-in is used on Windows but only this entry.",
+            "type": "string",
+            "format": "execution command"
+        },
+        "settings": {
+            "description": "This is the collection that holds all the settings for this plug-in",
+            "type": "array",
+            "items": {"$ref": "#/$defs/setting"},
+            "uniqueItems": true
+        },
+        "categories": {
+            "description": "This is the collection that holds all the action categories. Categories are used in the action list in Touch Portal. Each Category must contain at least an item such as an action, an event or an connector.",
+            "type": "array",
+            "items": {"$ref": "#/$defs/category"},
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": ["sdk", "version", "name", "id", "categories"],
+
+    "$defs": {
+        "setting": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "This is the name of the settings in the settings overview. This is also the identifier.",
+                    "type": "string"
+                },
+                "default": {
+                    "description": "This will be the default value for your setting.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "This will specify what type of settings you can use. Currently you can only use \"text\" or \"number\".",
+                    "type": "string",
+                    "enum": ["text", "number"]
+                },
+                "maxLength": {
+                    "description": "This is the max amount of characters a text settings value can have.",
+                    "type": "number"
+                },
+                "isPassword": {
+                    "description": "If the setting is of the type \"password\" you should enable this as it will hide the characters from the input field. It will show dots instead. Please do know that communication between Touch Portal and the plug-in is open text. This option is made so that random people will not be able to peek at the password field. It is not secure.",
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "description": "For some settings you do not want the user to edit them but you do want to share them. Using this switch will allow you to do so. Updating these setting values should be done with the dynamic functions.",
+                    "type": "boolean"
+                }
+            },
+            "required": ["name", "type"],
+            "if": {
+                "properties": {"type": {"const": "number"}}
+            },
+            "then": {
+                "properties": {
+                    "minValue": {
+                        "description": "The minimum number value allowed for a number type setting.",
+                        "type": "number"
+                    },
+                    "maxValue": {
+                        "description": "The maximum number value allowed for a number type setting.",
+                        "type": "number"
+                    }
+                }
+            }
+        },
+
+        "category": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "This is the id of the category.",
+                    "type": "string",
+                    "examples": ["some.super.unique.plugin.id.categoryId"]
+                },
+                "name": {
+                    "description": "This is the name of the category",
+                    "type": "string"
+                },
+                "imagepath": {
+                    "description": "This is the absolute path to an icon for the category. You should place this in your plugin folder and reference it. If you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugin folder.",
+                    "type": "string",
+                    "format": "file path"
+                },
+                "actions": {
+                    "description": "This is the collection that holds all the actions.",
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/action"},
+                    "uniqueItems": true
+                },
+                "events": {
+                    "description": "This is the collection that holds all the events. ",
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/event"},
+                    "uniqueItems": true
+                },
+                "connectors": {
+                    "description": "This is the collection that holds all the connectors.",
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/connector"},
+                    "uniqueItems": true
+                },
+                "states": {
+                    "description": "This is the collection that holds all the states.",
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/state"},
+                    "uniqueItems": true
+                }
+            },
+            "required": ["id", "name", "actions", "events", "states"]
+        },
+
+        "action": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "This is the id of the action. It is used to identify the action within Touch Portal. This id needs to be unique across plugins. This means that if you give it the id \"1\" there is a big chance that it will be a duplicate. Touch Portal may reject it or when the other action is called, yours will be as well with wrong data. Best practice is to create a unique prefix for all your actions like in our case; tp_pl_action_001.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "This is the name of the action. This will be used as the action name in the action category list.",
+                    "type": "string"
+                },
+                "prefix": {
+                    "description": "This is the text that is displayed before the name of the action in the action list of a button.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "This is the attribute that specifies whether this is a static action \"execute\" or a dynamic action \"communicate\".",
+                    "type": "string",
+                    "enum": ["execute", "communicate"]
+                },
+                "description": {
+                    "description": "This will add text to the popup window. It will be shown on the top of the popup. This can be used to explain parts of the plugin data.\n\nFrom version 2.0 of the Api (Touch Portal v2.2) this description will also be used in the inline actions on top to be able to add information about the action where applicable.",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "This is a collection of data which can be specified by the user. These data id's can be used to fill up the execution_cmd text.",
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/actionData"}
+                },
+                "tryInline": {
+                    "description": "Adding this attribute to the action will make this an inline action. User can edit data from the action list instead of a popup. Options are \"true\" or \"false\". Default is false",
+                    "type": "boolean",
+                    "default": false
+                },
+                "format": {
+                    "description": "This will be the format of the inline action. Use the id's of the data objects to place them within the text. Example given:\n\n\"format\":\"When {$actiondata001$} has {$actiondata002$} and number {$actiondata003$} is {$actiondata004$}\",\n\nThis is a fictive form but it shows how to use this. The data object with the id 'actiondata001' will be shown at the given location. To have an data object appear on the action line, use the format {$id$} where id is the id of the data object you want to show the control for.",
+                    "type": "string"
+                }
+            },
+            "required": ["id", "name", "prefix", "type"],
+            "if": {
+                "properties": {"type": {"const": "execute"}}
+            },
+            "then": {
+                "properties": {
+                    "executionType": {
+                        "description": "This is the attribute that specifies what kind of execution this action should use. This a Mac only functionality.",
+                        "type": "string",
+                        "enum": ["AppleScript", "Bash"]
+                    },
+                    "execution_cmd": {
+                        "description": "Specify the path of execution here. You should be aware that it will be passed to the OS process exection service. This means you need to be aware of spaces and use absolute paths to your executable.\n\nIf you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugin folder.",
+                        "type": "string",
+                        "format": "execution command"
+                    }
+                },
+                "required": ["execution_cmd"]
+            }
+        },
+
+        "actionData": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "This is the id of the data field. Touch Portal will use this for communicating the values or to place the values in the result.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of data:\n\n`text`: A data type that accepts a string\n`number`: A data type that accepts a number\n`switch`: A data type that accepts a true or false value\n`choice`: A data type that accepts a string where a collection of strings can be chosen from\n\nSince 2.0:\n`file`: A data type that represents a file which the user can pick with a file chooser\n`folder`: A data type that represents a folder which the user can pick with a folder chooser\n`color`: A data type that represents a color which the user can pick with a color chooser. This value must be in a the format #RRGGBBAA.",
+                    "type": "string",
+                    "enum": ["text", "number", "switch", "choice", "file", "folder", "color"]
+                },
+                "label": {
+                    "description": "This is the text used in the popup windows",
+                    "type": "string"
+                },
+                "default": {
+                    "description": "This is the default value the data object has. Use the correct types of data for the correct type of data object. Eg: The switch data object expects a true or false here."
+                }
+            },
+            "required": ["id", "type", "label", "default"],
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {"type": {"const": "number"}}
+                    },
+                    "then": {
+                        "properties": {
+                            "type": {
+                                "default": {"type": "number"}
+                            },
+                            "allowDecimals": {
+                                "description": "This field can only be used with the \"number\" type and tells the system whether this data field should allow decimals in the number. The default is \"true\".",
+                                "type": "boolean",
+                                "default": true
+                            },
+                            "minValue": {
+                                "description": "This is the lowest number that will be accepted. The user will get a message to correct the data if it is lower and the new value will be rejected.",
+                                "type": "number"
+                            },
+                            "maxValue": {
+                                "description": "This is the highest number that will be accepted. The user will get a message to correct the data if it is higher and the new value will be rejected.",
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {"type": {"const": "switch"}}
+                    },
+                    "then": {
+                        "properties": {"default": {"type": "boolean"}}
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {"type": {"const": "color"}}
+                    },
+                    "then": {
+                        "properties": {"default": {"format": "hex color #RRGGBBAA", "pattern": "^#([a-fA-F0-9]{8}|[a-fA-F0-9]{4})$"}}
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {"type": {"const": "file"}}
+                    },
+                    "then": {
+                        "properties": {
+                            "extensions": {
+                                "description": "This is a collection of extensions allowed to open. This only has effect when used with the file type.\n\neg: \"extensions\": [\"*.jpg\",\"*.png\",]",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {"type": {"const": "choice"}}
+                    },
+                    "then": {
+                        "properties": {
+                            "valueChoices": {
+                                "description": "This is a collection of strings that the user can choose from.",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["valueChoices"]
+                    }
+                }
+            ]
+        },
+
+        "event": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "This is the id of the event. When the event is triggered, Touch Portal will send this information to the plugin with this id.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "This is the name in the action category list.",
+                    "type": "string"
+                },
+                "format": {
+                    "description": "This is the text the action will show in the user generated action list. The $val location will be changed with a dropdown holding the choices that the user can make for the status.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Currently the only option here is \"communicate\" which indicates that the value will be communicated through the sockets.",
+                    "type": "string",
+                    "enum": ["communicate"]
+                },
+                "valueChoices": {
+                    "description": "These are all the options the user can select in the event.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "valueType": {
+                        "description": "Currently the only option here is \"choice\" which indicates that the type of event will be an dropdown with predefined values.",
+                        "type": "string",
+                        "enum": ["choice"]
+                    },
+                    "valueStateId": {
+                        "description": "Reference to a state. When this states changes, this event will be evaluated and possibly triggered if the condition is correct.",
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["id", "name", "format", "type", "type", "valueChoices", "valueType", "valueStateId"]
+        },
+
+        "connector": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "This is the id of the connector. It is used to identify the connectors within Touch Portal. This id needs to be unique across plugins. This means that if you give it the id \"1\" there is a big chance that it will be a duplicate. Touch Portal may reject it or mix it up with a different plug-in. Best practise is to create a unique prefix for all your actions like in our case; tp_yourplugin_connector_001.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "This is the name of the connector. This will be used as the connector name in the connector category list.",
+                    "type": "string"
+                },
+                "format": {
+                    "description": "This will be the format of the inline connector. Use the id's of the data objects to place them within the text. Example given:\n\n\"format\":\"Control {$connectordata001$} which has {$connectordata002$} and number {$connectordata003$} is {$connectordata004$}\",\n\nThis is a fictive form but it shows how to use this. The data object with the id 'connectordata001' will be shown at the given location. To have an data object appear on the connector line, use the format {$id$} where id is the id of the data object you want to show the control for.",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "This is a collection of data which can be specified by the user. These data id's can be used to fill up the format attribute.",
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/actionData"}
+                }
+            },
+            "required": ["id", "name", "format"]
+        },
+
+        "state": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "This is the id of the state. It is used to identify the states within Touch Portal. This id needs to be unique across plugins. This means that if you give it the id \"1\" there is a big chance that it will be a duplicate. Touch Portal may reject it or when the other state is updated, yours will be as well with wrong data. Best practice is to create a unique prefix for all your states like in our case; tp_sid_fruit.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "This is the type of state.",
+                    "type": "string",
+                    "enum": ["text", "choice"]
+                },
+                "desc": {
+                    "description": "This text describes the state and is used in the IF statement to let the user see what state it is changing. We recommend to make this text work in the flow of the inline nature of the IF statement within Touch Portal. This is also the title that is used in list where you can use this state value for logic execution.",
+                    "type": "string"
+                },
+                "default": {
+                    "description": "This is the value the state will have if it is not set already but is looked up.",
+                    "type": "string"
+                },
+                "valueChoices": {
+                    "description": "Specify the collection of values that can be used to choose from. These can also be dynamically changed if you use the dynamic actions.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["id", "type", "desc", "default"]
+        }
+    },
+    "additionalProperties": false
+}
