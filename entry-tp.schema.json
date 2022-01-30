@@ -285,7 +285,7 @@
                         "properties": { "type": { "const": "color" } }
                     },
                     "then": {
-                        "properties": { "default": { "format": "hex color #RRGGBBAA", "pattern": "^#([a-fA-F0-9]{8}|[a-fA-F0-9]{4})$" } }
+                        "properties": { "default": { "pattern": "^#([a-fA-F0-9]{8}|[a-fA-F0-9]{4})$" } }
                     }
                 },
                 {
