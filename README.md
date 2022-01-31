@@ -8,6 +8,6 @@ You can add the schema by using the link from my website
 
 ```json
 {
-    "$schema": "https://pjiesco.com/touch-portal/entry-tp.schema.json"
+    "$schema": "https://pjiesco.com/touch-portal/entry.tp/schema"
 }
 ```
