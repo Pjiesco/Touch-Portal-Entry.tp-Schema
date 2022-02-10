@@ -348,16 +348,16 @@
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "valueType": {
-                        "description": "Currently the only option here is \"choice\" which indicates that the type of event will be an dropdown with predefined values.",
-                        "type": "string",
-                        "enum": ["choice"]
-                    },
-                    "valueStateId": {
-                        "description": "Reference to a state. When this states changes, this event will be evaluated and possibly triggered if the condition is correct.",
-                        "type": "string"
                     }
+                },
+                "valueType": {
+                    "description": "Currently the only option here is \"choice\" which indicates that the type of event will be an dropdown with predefined values.",
+                    "type": "string",
+                    "enum": ["choice"]
+                },
+                "valueStateId": {
+                    "description": "Reference to a state. When this states changes, this event will be evaluated and possibly triggered if the condition is correct.",
+                    "type": "string"
                 }
             },
             "required": ["id", "name", "format", "type", "type", "valueChoices", "valueType", "valueStateId"]
