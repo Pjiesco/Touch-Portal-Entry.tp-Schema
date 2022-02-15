@@ -1,6 +1,6 @@
 {
-    "$schema": "http://json-schema.org/schema",
-    "$id": "https://pjiesco.com/touch-portal/entry-tp.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://pjiesco.com/touch-portal/entry.tp/schema",
     "title": "Touch Portal entry.tp Validation Schema",
     "description": "A validation schema for the Touch Portal plugin entry.tp",
     "type": "object",
