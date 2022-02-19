@@ -360,7 +360,7 @@
                     "type": "string"
                 }
             },
-            "required": ["id", "name", "format", "type", "type", "valueChoices", "valueType", "valueStateId"]
+            "required": ["id", "name", "format", "type", "valueChoices", "valueType", "valueStateId"]
         },
 
         "connector": {
