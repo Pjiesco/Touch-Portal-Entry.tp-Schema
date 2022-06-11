@@ -9,7 +9,7 @@
         "sdk": {
             "description": "This should represent the SDK version of Touch Portal this plugin is build for. Versioning data:\n\nTouch Portal v2.1 introduced Api 1\nTouch Portal v2.2 introduced Api 2\nTouch Portal v2.3 introduced Api 3\nTouch Portal v3.0 introduced Api 4\nTouch Portal v3.0.6 introduced Api 5",
             "type": "number",
-            "enum": [1, 2, 3, 4, 5]
+            "enum": [1, 2, 3, 4, 5, 6]
         },
         "version": {
             "description": "A number representing your own versioning. Currently this variable is not used by Touch Portal but may be used in the future. This should be an integer value. So only whole numbers, no decimals. This version value will be send back after the pairing has been done.",
