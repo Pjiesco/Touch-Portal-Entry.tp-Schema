@@ -42,7 +42,7 @@
       }
     },
     "plugin_start_cmd": {
-      "description": "Specify the path of execution here. You should be aware that it will be passed to the OS process exection service. This means you need to be aware of spaces and use absolute paths to your executable.\n\nIf you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugins folder. So append your plugins folder name to it as well to access your plugin base folder.\n\nThis execution will be done when the plugin is loaded in the system and only if it is a valid plugin. Use this to start your own service that communicates with the Touch Portal plugin system.",
+      "description": "Specify the path of execution here. You should be aware that it will be passed to the OS process execution service. This means you need to be aware of spaces and use absolute paths to your executable.\n\nIf you use %TP_PLUGIN_FOLDER% in the text here, it will be replaced with the path to the base plugins folder. So append your plugins folder name to it as well to access your plugin base folder.\n\nThis execution will be done when the plugin is loaded in the system and only if it is a valid plugin. Use this to start your own service that communicates with the Touch Portal plugin system.",
       "type": "string"
     },
     "plugin_start_cmd_windows": {
